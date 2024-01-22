@@ -1,0 +1,26 @@
+version: "3"
+
+services:
+  appsmith:
+    image: index.docker.io/appsmith/appsmith-ce
+    container_name: appsmith
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./stacks:/appsmith-stacks
+    restart: unless-stopped
+    labels:
+      com.centurylinklabs.watchtower.enable: true
+    depends_on:
+      - postgres
+  postgres:
+    image: postgres:latest
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=baublock_srm
+      - POSTGRES_PASSWORD=123456
+    ports:
+      - 5432:5432
+    volumes: 
+      - ./postgres-data:/var/lib/postgresql/data
